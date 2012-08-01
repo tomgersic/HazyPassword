@@ -3,11 +3,17 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-
+    <script type="text/javascript" charset="utf-8">
+            //Handle JS Errors
+            window.onerror = function(errorMsg,url,lineNumber) {
+                alert("[ERROR] "+errorMsg+" | "+url+" | "+lineNumber);
+                console.log("[ERROR] "+errorMsg+" | "+url+" | "+lineNumber);
+            }
+    </script>
     <!-- include jquery mobile -->
-    <link rel="stylesheet" href="jquery/jquery.mobile-1.0b2.min.css" />
-    <script src="jquery/jquery-1.6.2.min.js"></script>
-    <script src="jquery/jquery.mobile-1.0b2.min.js"></script>
+    <link rel="stylesheet" href="jquery/jquery.mobile-1.1.1.min.css" />
+    <script src="jquery/jquery-1.7.2.min.js"></script>
+    <script src="jquery/jquery.mobile-1.1.1.min.js"></script>
         
     <!-- include cordova / callback -->
 	<script type="text/javascript" charset="utf-8" src="cordova-1.8.1.js"></script>

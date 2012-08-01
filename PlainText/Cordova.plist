@@ -24,6 +24,7 @@
 	<array>
 		<string>*.force.com</string>
 		<string>*.salesforce.com</string>
+		<string>*.database.com</string>
 	</array>
 	<key>Plugins</key>
 	<dict>
