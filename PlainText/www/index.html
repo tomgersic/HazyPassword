@@ -34,25 +34,7 @@
     // The version of the REST API you wish to use in your app.
     var apiVersion = "v23.0";
 
-	// If you want to prevent dragging, uncomment this section
-	/*
-	function preventBehavior(e) 
-	{ 
-      e.preventDefault(); 
-    };
-	document.addEventListener("touchmove", preventBehavior, false);
-	*/
-	
-	/* If you are supporting your own protocol, the var invokeString will contain any arguments to the app launch.
-	see http://iphonedevelopertips.com/cocoa/launching-your-own-application-via-a-custom-url-scheme.html
-	for more details -jm */
-	/*
-	function handleOpenURL(url)
-	{
-		// do something with the url passed in.
-	}
-	*/
-	
+
     var forcetkClient;
     var debugMode = true;
 
@@ -100,11 +82,31 @@
   <body>
       <div data-role="page" data-theme="b" id="home"> 
           <div  data-role="header"> 
+              <a id="btnRefresh" href="#" data-icon="refresh">Refresh</a>
               <h1>PlainText Password Manager</h1> 
           </div> 
 
-          <div id="#content" data-role="content"></div> 
-
-      </div> 
+          <div id="content" data-role="content">
+            <ul class="passwordList" data-role="listview"></ul>
+          </div> 
+      </div>
+      <div data-role="page" data-theme="b" id="edit" data-add-back-btn="true"> 
+          <div  data-role="header"> 
+              <h1>Password</h1> 
+          </div> 
+          
+          <div id="content" data-role="content">
+              <ul class="passwordEdit" data-role="listview"></ul>
+          </div> 
+      </div>
+      <script id="passwordItem" type="text/x-jquery-tmpl">
+        <li data-messageId="${Id}" class="passwordItem">
+          <a href="index.html#edit">
+            <h3>${Name}</h3>
+            <p class="subItem"><strong>${URL__c}</strong></p>
+            <p class="subItem">${Username__c}</p>
+          </a>
+        </li>
+      </script>
   </body>
 </html>

@@ -1,15 +1,14 @@
 //Sample code for Hybrid REST Explorer
 
 function init() {
-  forcetkClient.query("SELECT Name, Password__c, URL__c FROM Password__c", function(response){
+  forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){
     console.log(response);
-    showRecordList('#home',response.records)
+    //showRecordList('#home',response.records)
+    var passwordList = $( "#home" ).find( ".passwordList" );
+    passwordList.empty();
+    $( "#passwordItem" ).tmpl( response.records ).appendTo( passwordList );
+    passwordList.listview( "refresh" );        
   }, onError); 
-
-  $("#content li").click(function(){
-      console.log('click');
-      //console.log($(this));
-  });
 }
 
 function clickedCell(cell){
