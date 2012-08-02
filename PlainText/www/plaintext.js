@@ -1,10 +1,19 @@
 //Sample code for Hybrid REST Explorer
 
 function init() {
-  forcetkClient.query("SELECT Name FROM Password__c", function(response){
+  forcetkClient.query("SELECT Name, Password__c, URL__c FROM Password__c", function(response){
     console.log(response);
     showRecordList('#home',response.records)
   }, onError); 
+
+  $("#content li").click(function(){
+      console.log('click');
+      //console.log($(this));
+  });
+}
+
+function clickedCell(cell){
+
 }
 
 /**
@@ -45,7 +54,8 @@ function showRecordList(urlObj,recordData) {
                 recordFields += "<b>"+key+":</b> "+recordData[record][key]+"<br/>";
             }
         }
-        markup += "<li id='"+recordData[record].Id+"'><h3 class='ui-li-heading'>"+recordData[record].Name+"</h3><p class='ui-li-desc'>"+recordFields+"</p></li>";
+        markup += "<li class='linkedrecord' id='"+recordData[record].Id+"'><h3 class='ui-li-heading'>"+recordData[record].Name+"</h3><p class='ui-li-desc'>"+recordFields+"</p></li>";
+
     }
 
     markup += "</ul>";
@@ -76,7 +86,6 @@ function showRecordList(urlObj,recordData) {
     // Now call changePage() and tell it to switch to
     // the page we just modified.
     $j.mobile.changePage( $page );    
-
 }
 
 
