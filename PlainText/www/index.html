@@ -15,6 +15,7 @@
     <script src="jquery/jquery-1.7.2.min.js"></script>
     <script src="jquery/jquery.mobile-1.1.1.min.js"></script>
     <script src="jquery/jquery.tmpl.min.js"></script>
+    <script src="jquery/jquery.url.js"></script>
         
     <!-- include cordova / callback -->
 	<script type="text/javascript" charset="utf-8" src="cordova-1.8.1.js"></script>
@@ -76,7 +77,7 @@
     </script>
         
 	<!-- load our app-specific code -->
-    <script src="plaintext.js"></script>       
+  <script src="plaintext.js"></script>       
 
   </head>
   <body>
@@ -96,12 +97,23 @@
           </div> 
           
           <div id="content" data-role="content">
-              <ul class="passwordEdit" data-role="listview"></ul>
+              <form><input type="hidden" name="id" id="id" value=""  />
+              <ul class="passwordEdit" data-role="listview">
+                <li data-role="fieldcontain">
+                    <label for="name">Username:</label>
+                    <input type="text" name="username" id="username" value=""  />
+                </li>
+                <li data-role="fieldcontain">
+                    <label for="name">Password:</label>
+                    <input type="text" name="password" id="password" value=""  />
+                </li>
+              </ul>
+            </form>
           </div> 
       </div>
       <script id="passwordItem" type="text/x-jquery-tmpl">
         <li data-messageId="${Id}" class="passwordItem">
-          <a href="index.html#edit">
+          <a href="index.html#edit?Id=${Id}&Username__c=${Username__c}&Password__c=${Password__c}">
             <h3>${Name}</h3>
             <p class="subItem"><strong>${URL__c}</strong></p>
             <p class="subItem">${Username__c}</p>
