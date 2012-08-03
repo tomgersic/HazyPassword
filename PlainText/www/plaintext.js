@@ -2,11 +2,11 @@
 var FAKE_OFFLINE = false;
 
 function init() {
-  loadRecords();
+  loadRecords(onError);
 
   $j('#btnRefresh').click(function() {
     console.log("Refreshing...");
-    loadRecords();
+    loadRecordsFromSalesforce();
   });
     
 
@@ -56,29 +56,54 @@ function init() {
   });
 }
 
-function loadRecords() {
+/**
+ * load records for the app
+ **/
+function loadRecords(error) {
+  //check if we have local records -- if we do, just load those
+  navigator.smartstore.soupExists('Password__c',function(param){
+    if(param){
+      loadRecordsFromSmartstore();
+    }
+    else {
+      loadRecordsFromSalesforce(false);
+    }
+  },error);
+}
+
+function loadRecordsFromSalesforce(soupExists){
   //check if we're online
   if(checkConnection() && !FAKE_OFFLINE){
     console.log('We are online... querying SFDC');
     forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){
-      console.log(response);
+    //console.log(response);
       
-      registerPasswordSoup(storeRecords(response.records,onError),onError);
+    registerPasswordSoup(storeRecords(response.records,onError),onError);
 
-      populateListview(response.records);
-    }, onError); 
+    populateListview(response.records);
+  }, onError); 
+
   }
   else {
     console.log('We are not online... querying SmartStore');
+    if(soupExists) {
+      loadRecordsFromSmartstore();
+    }
+    else {
+      alert('ERROR: Not online and no local records exist');
+    }
+  }
+
+
+}
+
+function loadRecordsFromSmartstore(){
     var querySpec = navigator.smartstore.buildAllQuerySpec("Id", null, 2000);
         
     navigator.smartstore.querySoup('Password__c',querySpec,
                                   function(cursor) { onSuccessQuerySoup(cursor); },
                                   onError);
- 
-  }
 }
-
 /**
  * Register the Password__c soup if it doesn't already exist
  **/
@@ -172,9 +197,9 @@ function onSuccessQuerySoup(cursor) {
     
     populateListview(records);    
 
-    SFHybridApp.logToConsole("***RECORDS***");
+    /*SFHybridApp.logToConsole("***RECORDS***");
     SFHybridApp.logToConsole(JSON.stringify(records,null,'<br>'));
-    SFHybridApp.logToConsole(records.length);
+    SFHybridApp.logToConsole(records.length);*/
 }
 
 /**
