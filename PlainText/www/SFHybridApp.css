@@ -8,3 +8,8 @@
 {
     padding:0px; margin:0px; word-wrap:break-word;
 }
+.ui-page
+{
+	background: transparent url(images/cloudynight.jpg) no-repeat center center;
+	background-size: cover;
+}
