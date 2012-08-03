@@ -1,14 +1,16 @@
 //Sample code for Hybrid REST Explorer
 var FAKE_OFFLINE = false;
 var fieldsChanged = false;
+var passwordManager;
 
 function init() {
-  loadRecords(onError);
+  passwordManager = new Password();
+  passwordManager.loadRecords(onError);
 
   $j('#btnRefresh').click(function() {
     console.log("Refreshing...");
     fieldsChanged=false;
-    loadRecordsFromSalesforce();
+    passwordManager.loadRecordsFromSalesforce();
   });
     
   //Do stuff when the page changes
@@ -20,7 +22,7 @@ function init() {
           var idField = page.find('#id');
           var usernameField = page.find('#username');
           var passwordField = page.find('#password');
-          updateRecord(idField.val(),usernameField.val(),passwordField.val());
+          passwordManager.updateRecord(idField.val(),usernameField.val(),passwordField.val(),onError);
         }
         fieldsChanged=false;
 
@@ -84,208 +86,6 @@ function changeToEditPage(url,event) {
         //stop the default page change actions from occurring
         event.preventDefault();
     }                  
-}
-
-/**
- * load records for the app
- **/
-function loadRecords(error) {
-  //check if we have local records -- if we do, just load those
-  navigator.smartstore.soupExists('Password__c',function(param){
-    if(param){
-      loadRecordsFromSmartstore();
-    }
-    else {
-      loadRecordsFromSalesforce(false);
-    }
-  },error);
-}
-
-/**
- * load records from salesforce
- **/
-function loadRecordsFromSalesforce(soupExists){
-  //check if we're online
-  if(checkConnection()){
-    console.log('We are online... querying SFDC');
-    forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){
-    //console.log(response);
-      
-    registerPasswordSoup(storeRecords(response.records,onError),onError);
-
-    populateListview(response.records);
-  }, onError); 
-
-  }
-  else {
-    console.log('We are not online... querying SmartStore');
-    if(soupExists) {
-      loadRecordsFromSmartstore();
-    }
-    else {
-      alert('ERROR: Not online and no local records exist');
-    }
-  }
-
-
-}
-
-/**
- * Load records from Smartstore
- **/
-function loadRecordsFromSmartstore(){
-    var querySpec = navigator.smartstore.buildAllQuerySpec("Id", null, 2000);
-        
-    navigator.smartstore.querySoup('Password__c',querySpec,
-                                  function(cursor) { onSuccessQuerySoup(cursor); },
-                                  onError);
-}
-
-/**
- * Load record with Id from Smartstore
- **/
-function loadRecordWithIdFromSmartstore(Id,callback,error){
-  console.log("Load Record With Id From Smartstore");
-    var querySpec = navigator.smartstore.buildExactQuerySpec("Id", Id, 2000);
-    navigator.smartstore.querySoup('Password__c',querySpec,
-                                  function(cursor) { 
-                                      var records = [];
-                                      records = loadAllRecords(cursor,records);
-                                      callback(records);
-                                  },
-                                  error);
-}
-
-/**
- * Update an entry changed by the user
- **/
-function updateRecord(Id,username,password) {
-  console.log('Updating Records');
-  forcetkClient.update('Password__c',Id,{"Username__c":username,"Password__c":password},function(){
-    console.log('SFDC Update Success!');
-    loadRecordWithIdFromSmartstore(Id,function(records){
-      console.log('Smartstore record loaded');
-      //upate username/password
-      records[0].Username__c = username;
-      records[0].Password__c = password;
-      storeRecords(records,onError);
-      loadRecords(onError);
-
-    },onError);
-  },onError);
-}
-
-
-
-/**
- * Register the Password__c soup if it doesn't already exist
- **/
-function registerPasswordSoup(callback,error){
-    console.log('registering the password soup');
-    //check if the Password__c soup exists
-    navigator.smartstore.soupExists('Password__c',function(param){
-      if(!param){
-        //Password__c soup doesn't exist, so let's register it
-        var indexSpec=[{"path":"Id","type":"string"},{"path":"Name","type":"string"}];
-        navigator.smartstore.registerSoup('Password__c',indexSpec,function(param){
-          console.log('Soup Created: '+param);
-          callback();
-        },error);
-      }
-      else {
-        callback();
-      }
-    },error);
-}
-
-/**
- * Store Records
- **/
-function storeRecords(records,error){
-  console.log('storing records');
-  navigator.smartstore.upsertSoupEntriesWithExternalId('Password__c',records, 'Id', function(){
-                                       SFHybridApp.logToConsole("Soup Upsert Success");        
-                                       }, error);
-}
-
-/**
- * Check the connection state
- * return true if we're online
- **/
-function checkConnection() {
-  if(FAKE_OFFLINE){
-    return false;
-  }
-  
-  var networkState = navigator.network.connection.type;
-
-  var states = {};
-  states[Connection.UNKNOWN]  = 'Unknown connection';
-  states[Connection.ETHERNET] = 'Ethernet connection';
-  states[Connection.WIFI]     = 'WiFi connection';
-  states[Connection.CELL_2G]  = 'Cell 2G connection';
-  states[Connection.CELL_3G]  = 'Cell 3G connection';
-  states[Connection.CELL_4G]  = 'Cell 4G connection';
-  states[Connection.NONE]     = 'No network connection';
-
-  if(states[networkState] == states[Connection.NONE] || states[networkState] == states[Connection.UNKNOWN]){
-    return false;
-  }
-  else {
-    return true;
-  }
-}
-
-/**
- * Take an array of records, and populate the list view
- **/
-function populateListview(records){
-  var passwordList = $( "#home" ).find( ".passwordList" );
-  passwordList.empty();
-  $( "#passwordItem" ).tmpl( records ).appendTo( passwordList );
-  passwordList.listview( "refresh" );    
-}
-
-/**
- * define handler for paging from SmartStore query
- **/
-function addEntriesFromCursorTo(cursor,records) {
-    var curPageEntries = cursor.currentPageOrderedEntries;
-    $j.each(curPageEntries, function(i,entry) {
-        records.push(entry);
-    });
-    return records;
-}
-
-/**
- * load all records from all pages for the specified cursor into the specified array
- **/
-function loadAllRecords(cursor,records){
-  //add the first page of results to records
-  records = addEntriesFromCursorTo(cursor,records);
-
-  //loop through available pages, populating records
-  while(cursor.currentPageIndex < cursor.totalPages - 1) {
-      navigator.smartstore.moveCursorToNextPage(cursor, function(){
-        records = addEntriesFromCursorTo(cursor,records);
-      });
-  }
-  return records;
-}
-
-/**
- * Soup Successfully Queried
- **/
-function onSuccessQuerySoup(cursor) {
-    console.log("onSuccessQuerySoup()");
-    var records = [];
-
-    records = loadAllRecords(cursor,records);
-    
-    //close the query cursor
-    navigator.smartstore.closeCursor(cursor);
-    
-    populateListview(records);    
 }
 
 /**
