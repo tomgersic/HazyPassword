@@ -130,7 +130,7 @@ function registerPasswordSoup(callback,error){
  **/
 function storeRecords(records,error){
   console.log('storing records');
-  navigator.smartstore.upsertSoupEntries('Password__c',records, function(){
+  navigator.smartstore.upsertSoupEntriesWithExternalId('Password__c',records, 'Id', function(){
                                        SFHybridApp.logToConsole("Soup Upsert Success");        
                                        }, error);
 }
