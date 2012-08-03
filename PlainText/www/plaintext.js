@@ -1,16 +1,28 @@
 //Sample code for Hybrid REST Explorer
 
 function init() {
-  forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){
-    console.log(response);
-    
-    registerPasswordSoup(storeRecords(response.records,onError));
+  var FAKE_OFFLINE = true;
 
-    var passwordList = $( "#home" ).find( ".passwordList" );
-    passwordList.empty();
-    $( "#passwordItem" ).tmpl( response.records ).appendTo( passwordList );
-    passwordList.listview( "refresh" );        
-  }, onError); 
+  //check if we're online
+  if(checkConnection() && !FAKE_OFFLINE){
+    console.log('We are online... querying SFDC');
+    forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){
+      console.log(response);
+      
+      registerPasswordSoup(storeRecords(response.records,onError),onError);
+
+      populateListview(response.records);
+    }, onError); 
+  }
+  else {
+    console.log('We are not online... querying SmartStore');
+    var querySpec = navigator.smartstore.buildAllQuerySpec("Id", null, 2000);
+        
+    navigator.smartstore.querySoup('Password__c',querySpec,
+                                  function(cursor) { onSuccessQuerySoup(cursor); },
+                                  onError);
+ 
+  }
 
   $(document).bind("pagebeforechange",function(event,data) {
     if (typeof data.toPage === "string") {
@@ -87,6 +99,73 @@ function storeRecords(records,error){
   navigator.smartstore.upsertSoupEntries('Password__c',records, function(){
                                        SFHybridApp.logToConsole("Soup Upsert Success");        
                                        }, error);
+}
+
+/**
+ * Check the connection state
+ * return true if we're online
+ **/
+function checkConnection() {
+    var networkState = navigator.network.connection.type;
+
+    var states = {};
+    states[Connection.UNKNOWN]  = 'Unknown connection';
+    states[Connection.ETHERNET] = 'Ethernet connection';
+    states[Connection.WIFI]     = 'WiFi connection';
+    states[Connection.CELL_2G]  = 'Cell 2G connection';
+    states[Connection.CELL_3G]  = 'Cell 3G connection';
+    states[Connection.CELL_4G]  = 'Cell 4G connection';
+    states[Connection.NONE]     = 'No network connection';
+
+    if(states[networkState] == states[Connection.NONE] || states[networkState] == states[Connection.UNKNOWN]){
+      return false;
+    }
+    else {
+      return true;
+    }
+}
+
+/**
+ * Take an array of records, and populate the list view
+ **/
+function populateListview(records){
+  var passwordList = $( "#home" ).find( ".passwordList" );
+  passwordList.empty();
+  $( "#passwordItem" ).tmpl( records ).appendTo( passwordList );
+  passwordList.listview( "refresh" );    
+}
+
+/**
+ * Soup Successfully Queried
+ **/
+function onSuccessQuerySoup(cursor) {
+    console.log("onSuccessQuerySoup()");
+    var records = [];
+    
+    //define handler for paging
+    function addEntriesFromCursor() {
+        var curPageEntries = cursor.currentPageOrderedEntries;
+        $j.each(curPageEntries, function(i,entry) {
+                records.push(entry);
+        });
+    }
+    
+    //add the first page of results to records
+    addEntriesFromCursor();
+    
+    //loop through available pages, populating records
+    while(cursor.currentPageIndex < cursor.totalPages - 1) {
+        navigator.smartstore.moveCursorToNextPage(cursor, addEntriesFromCursor);
+    }
+    
+    //close the query cursor
+    navigator.smartstore.closeCursor(cursor);
+    
+    populateListview(records);    
+
+    SFHybridApp.logToConsole("***RECORDS***");
+    SFHybridApp.logToConsole(JSON.stringify(records,null,'<br>'));
+    SFHybridApp.logToConsole(records.length);
 }
 
 /**
