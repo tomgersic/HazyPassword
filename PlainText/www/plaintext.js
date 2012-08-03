@@ -3,7 +3,9 @@
 function init() {
   forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){
     console.log(response);
-    //showRecordList('#home',response.records)
+    
+    registerPasswordSoup(storeRecords(response.records,onError));
+
     var passwordList = $( "#home" ).find( ".passwordList" );
     passwordList.empty();
     $( "#passwordItem" ).tmpl( response.records ).appendTo( passwordList );
@@ -54,6 +56,37 @@ function init() {
         }
     }
   });
+}
+
+/**
+ * Register the Password__c soup if it doesn't already exist
+ **/
+function registerPasswordSoup(callback,error){
+    console.log('registering the password soup');
+    //check if the Password__c soup exists
+    navigator.smartstore.soupExists('Password__c',function(param){
+      if(!param){
+        //Password__c soup doesn't exist, so let's register it
+        var indexSpec=[{"path":"Id","type":"string"},{"path":"Name","type":"string"}];
+        navigator.smartstore.registerSoup('Password__c',indexSpec,function(param){
+          console.log('Soup Created: '+param);
+          callback();
+        },error);
+      }
+      else {
+        callback();
+      }
+    },error);
+}
+
+/**
+ * Store Records
+ **/
+function storeRecords(records,error){
+  console.log('storing records');
+  navigator.smartstore.upsertSoupEntries('Password__c',records, function(){
+                                       SFHybridApp.logToConsole("Soup Upsert Success");        
+                                       }, error);
 }
 
 /**
