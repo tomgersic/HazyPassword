@@ -19,12 +19,13 @@
 	<key>AllowInlineMediaPlayback</key>
 	<false/>
 	<key>OpenAllWhitelistURLsInWebView</key>
-	<true/>
+	<false/>
 	<key>ExternalHosts</key>
 	<array>
 		<string>*.force.com</string>
 		<string>*.salesforce.com</string>
 		<string>*.database.com</string>
+		<string>*</string>
 	</array>
 	<key>Plugins</key>
 	<dict>

@@ -21,13 +21,22 @@ function init() {
             var id = $.url(paramstring).fparam('Id');
             var username = $.url(paramstring).fparam('Username__c');
             var password = $.url(paramstring).fparam('Password__c');
+            var name = $.url(paramstring).fparam('Name');
+            var siteUrl = $.url(paramstring).fparam('URL__c');
 
             var pageSelector = url.hash.replace(/\?.*$/, "");
             if(id) {
                 //select the page
                 var page = $(pageSelector);
+                //put the site name in the header
+                var header = page.children(":jqmData(role=header)");
+                header.html("<h1>"+name+"</h1>");
                 //select the content element within it
                 var content = page.children(":jqmData(role=content)");
+                //add the URL
+                var urlField = content.find('#siteUrl');
+                urlField.html("<a href='"+siteUrl+"' target='_blank'>"+siteUrl+"</a>");
+
                 //fill out the fields
                 var idField = content.find('#id');
                 idField.val(id);
