@@ -16,6 +16,15 @@ function init() {
     if (typeof data.toPage === "string") {
         if(fieldsChanged) {
           console.log('Fields Changed... Saving');
+          var page = $('#edit');
+          console.log('mark');
+          var idField = page.find('#id');
+          console.log('mark');
+          var usernameField = page.find('#username');
+          console.log('mark');
+          var passwordField = page.find('#password');
+          console.log('mark');
+          updateRecord(idField.val(),usernameField.val(),passwordField.val());
         }
         fieldsChanged=false;
 
@@ -96,6 +105,9 @@ function loadRecords(error) {
   },error);
 }
 
+/**
+ * load records from salesforce
+ **/
 function loadRecordsFromSalesforce(soupExists){
   //check if we're online
   if(checkConnection() && !FAKE_OFFLINE){
@@ -122,6 +134,9 @@ function loadRecordsFromSalesforce(soupExists){
 
 }
 
+/**
+ * Load records from Smartstore
+ **/
 function loadRecordsFromSmartstore(){
     var querySpec = navigator.smartstore.buildAllQuerySpec("Id", null, 2000);
         
@@ -129,6 +144,31 @@ function loadRecordsFromSmartstore(){
                                   function(cursor) { onSuccessQuerySoup(cursor); },
                                   onError);
 }
+
+/**
+ * Load record with Id from Smartstore
+ **/
+function loadRecordWithIdFromSmartstore(Id){
+    var querySpec = navigator.smartstore.buildExactQuerySpec("Id", Id, 1);
+        
+    navigator.smartstore.querySoup('Password__c',querySpec,
+                                  function(cursor) { onSuccessQuerySoup(cursor); },
+                                  onError);
+}
+
+/**
+ * Update an entry changed by the user
+ **/
+function updateRecord(Id,username,password) {
+  console.log('Updating Records');
+  forcetkClient.update('Password__c',Id,{"Username__c":username,"Password__c":password},function(){
+    console.log('SFDC Update Success!');
+
+  },onError);
+}
+
+
+
 /**
  * Register the Password__c soup if it doesn't already exist
  **/
@@ -194,37 +234,36 @@ function populateListview(records){
   passwordList.listview( "refresh" );    
 }
 
+//define handler for paging
+function addEntriesFromCursorTo(cursor,records) {
+    var curPageEntries = cursor.currentPageOrderedEntries;
+    $j.each(curPageEntries, function(i,entry) {
+        records.push(entry);
+    });
+    return records;
+}
+
 /**
  * Soup Successfully Queried
  **/
 function onSuccessQuerySoup(cursor) {
     console.log("onSuccessQuerySoup()");
     var records = [];
-    
-    //define handler for paging
-    function addEntriesFromCursor() {
-        var curPageEntries = cursor.currentPageOrderedEntries;
-        $j.each(curPageEntries, function(i,entry) {
-                records.push(entry);
-        });
-    }
-    
+
     //add the first page of results to records
-    addEntriesFromCursor();
-    
+    records = addEntriesFromCursorTo(cursor,records);
+
     //loop through available pages, populating records
     while(cursor.currentPageIndex < cursor.totalPages - 1) {
-        navigator.smartstore.moveCursorToNextPage(cursor, addEntriesFromCursor);
+        navigator.smartstore.moveCursorToNextPage(cursor, function(){
+          records = addEntriesFromCursorTo(cursor,records);
+        });
     }
     
     //close the query cursor
     navigator.smartstore.closeCursor(cursor);
     
     populateListview(records);    
-
-    /*SFHybridApp.logToConsole("***RECORDS***");
-    SFHybridApp.logToConsole(JSON.stringify(records,null,'<br>'));
-    SFHybridApp.logToConsole(records.length);*/
 }
 
 /**
