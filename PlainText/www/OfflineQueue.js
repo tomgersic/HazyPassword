@@ -28,7 +28,7 @@ OfflineQueue.UploadQueue = function(callback,error) {
 				for(i in records){
 					forcetkClient.update('Password__c',records[i].Id,{"Username__c":records[i].Username__c,"Password__c":records[i].Password__c},function(){
 						console.log('QUEUED SFDC Update Success!');
-						navigator.smartstore.removeFromSoup('Queue',['\'a00E0000003JKqGIAW\''],function(){
+						navigator.smartstore.removeFromSoup('Queue',[records[i]._soupEntryId],function(){
 							console.log('Removed from Soup');
 							if(i == records.length-1) {
 								callback();
