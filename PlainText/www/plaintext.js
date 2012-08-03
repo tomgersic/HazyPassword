@@ -1,28 +1,14 @@
 //Sample code for Hybrid REST Explorer
+var FAKE_OFFLINE = false;
 
 function init() {
-  var FAKE_OFFLINE = true;
+  loadRecords();
 
-  //check if we're online
-  if(checkConnection() && !FAKE_OFFLINE){
-    console.log('We are online... querying SFDC');
-    forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){
-      console.log(response);
-      
-      registerPasswordSoup(storeRecords(response.records,onError),onError);
-
-      populateListview(response.records);
-    }, onError); 
-  }
-  else {
-    console.log('We are not online... querying SmartStore');
-    var querySpec = navigator.smartstore.buildAllQuerySpec("Id", null, 2000);
-        
-    navigator.smartstore.querySoup('Password__c',querySpec,
-                                  function(cursor) { onSuccessQuerySoup(cursor); },
-                                  onError);
- 
-  }
+  $j('#btnRefresh').click(function() {
+    console.log("Refreshing...");
+    loadRecords();
+  });
+    
 
   $(document).bind("pagebeforechange",function(event,data) {
     if (typeof data.toPage === "string") {
@@ -68,6 +54,29 @@ function init() {
         }
     }
   });
+}
+
+function loadRecords() {
+  //check if we're online
+  if(checkConnection() && !FAKE_OFFLINE){
+    console.log('We are online... querying SFDC');
+    forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){
+      console.log(response);
+      
+      registerPasswordSoup(storeRecords(response.records,onError),onError);
+
+      populateListview(response.records);
+    }, onError); 
+  }
+  else {
+    console.log('We are not online... querying SmartStore');
+    var querySpec = navigator.smartstore.buildAllQuerySpec("Id", null, 2000);
+        
+    navigator.smartstore.querySoup('Password__c',querySpec,
+                                  function(cursor) { onSuccessQuerySoup(cursor); },
+                                  onError);
+ 
+  }
 }
 
 /**
