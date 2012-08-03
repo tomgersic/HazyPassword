@@ -9,7 +9,7 @@ function init() {
     loadRecordsFromSalesforce();
   });
     
-
+  //Do stuff when the page changes
   $(document).bind("pagebeforechange",function(event,data) {
     if (typeof data.toPage === "string") {
         var url = $.mobile.path.parseUrl(data.toPage);
@@ -29,8 +29,8 @@ function init() {
                 //select the page
                 var page = $(pageSelector);
                 //put the site name in the header
-                var header = page.children(":jqmData(role=header)");
-                header.html("<h1>"+name+"</h1>");
+                var header = page.find('#title');
+                header.html(name);
                 //select the content element within it
                 var content = page.children(":jqmData(role=content)");
                 //add the URL
