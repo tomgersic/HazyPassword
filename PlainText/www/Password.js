@@ -29,9 +29,8 @@ Password.prototype.loadRecordsFromSalesforce = function(soupExists,error) {
 	if(Util.checkConnection()){
 		console.log('We are online... querying SFDC');
 		forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){  
-			//that.registerPasswordSoup(that.storeRecords(response.records,error),error);
 			that.registerPasswordSoup(function(){
-				that.storeRecords(response.records,error);
+				OfflineQueue.StoreRecords(response.records,error);
 			},error);
 			that.populateListview(response.records);
 		}, error); 
@@ -88,7 +87,7 @@ Password.prototype.updateRecord = function(Id,username,password,error) {
 			//upate username/password
 			records[0].Username__c = username;
 			records[0].Password__c = password;
-			that.storeRecords(records,error);
+			OfflineQueue.storeRecords(records,error);
 			that.loadRecords(error);
 		},error);
 	},error);
@@ -115,15 +114,7 @@ Password.prototype.registerPasswordSoup = function(callback,error){
 	},error);
 }
 
-/**
- * Store Records
- **/
-Password.prototype.storeRecords = function(records,error){
-	console.log('Password.prototype.storeRecords');
-	navigator.smartstore.upsertSoupEntriesWithExternalId('Password__c',records, 'Id', function(){
-		console.log("Soup Upsert Success");        
-	}, error);
-}
+
 
 /**
  * Take an array of records, and populate the list view
