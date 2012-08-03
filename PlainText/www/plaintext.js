@@ -1,17 +1,24 @@
 //Sample code for Hybrid REST Explorer
 var FAKE_OFFLINE = false;
+var fieldsChanged = false;
 
 function init() {
   loadRecords(onError);
 
   $j('#btnRefresh').click(function() {
     console.log("Refreshing...");
+    fieldsChanged=false;
     loadRecordsFromSalesforce();
   });
     
   //Do stuff when the page changes
   $(document).bind("pagebeforechange",function(event,data) {
     if (typeof data.toPage === "string") {
+        if(fieldsChanged) {
+          console.log('Fields Changed... Saving');
+        }
+        fieldsChanged=false;
+
         var url = $.mobile.path.parseUrl(data.toPage);
         var editurl = /^#edit/;
         if (url.hash.search(editurl) !== -1) {
@@ -44,6 +51,17 @@ function init() {
                 usernameField.val(username);
                 var passwordField = content.find('#password');
                 passwordField.val(password);
+
+                //monitor for changes to fields
+                usernameField.change(function(){
+                    console.log('username changed');
+                    fieldsChanged=true;
+                });
+
+                passwordField.change(function(){
+                    console.log('password changed');
+                    fieldsChanged=true;
+                });
 
                 //we're intercepting the page change event, so change the page
                 $.mobile.changePage(page);
