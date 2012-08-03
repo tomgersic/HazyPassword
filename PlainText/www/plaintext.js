@@ -165,7 +165,12 @@ function updateRecord(Id,username,password) {
     console.log('SFDC Update Success!');
     loadRecordWithIdFromSmartstore(Id,function(records){
       console.log('Smartstore record loaded');
-      console.log(records);
+      //upate username/password
+      records[0].Username__c = username;
+      records[0].Password__c = password;
+      storeRecords(records,onError);
+      loadRecords(onError);
+
     },onError);
   },onError);
 }
