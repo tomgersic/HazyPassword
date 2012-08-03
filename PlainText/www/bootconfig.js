@@ -14,7 +14,7 @@ var remoteAccessConsumerKey = "3MVG9y6x0357HlefbhaJ_F1ntHYHhn8bDvq1hVx4DSa3DdU.3
 
 // The redirect URI value specified for your remote access object that defines
 // your application in Salesforce.
-var oauthRedirectURI = "https://login.salesforce.com/services/oauth2/success";
+var oauthRedirectURI = "testsfdc:///mobilesdk/detect/oauth/done";
 
 // The authorization/access scope(s) you wish to define for your application.
 var oauthScopes = ["web","api"];

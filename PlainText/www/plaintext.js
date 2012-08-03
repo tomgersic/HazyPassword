@@ -6,6 +6,8 @@ var passwordManager;
 function init() {
   passwordManager = new Password();
   passwordManager.loadRecords(onError);
+  
+  OfflineQueue.UploadQueue(function(){},onError);
 
   $j('#btnRefresh').click(function() {
     console.log("Refreshing...");

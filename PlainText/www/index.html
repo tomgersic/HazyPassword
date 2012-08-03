@@ -55,7 +55,7 @@
     // When this function is called, Cordova has been initialized and is ready to roll 
     function onDeviceReady() {
         SFHybridApp.logToConsole("onDeviceReady: Cordova ready");
-		//Call getAuthCredentials to get the initial session credentials
+		  //Call getAuthCredentials to get the initial session credentials
         SalesforceOAuthPlugin.getAuthCredentials(salesforceSessionRefreshed, getAuthCredentialsError);
 
         //register to receive notifications when autoRefreshOnForeground refreshes the sfdc session

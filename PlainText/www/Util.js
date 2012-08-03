@@ -30,3 +30,33 @@ Util.checkConnection = function() {
     return true;
   }
 }
+
+/**
+ * load all records from all pages for the specified cursor into the specified array
+ **/
+Util.LoadAllRecords = function(cursor,records){
+  console.log('Util.LoadAllRecords');
+  //add the first page of results to records
+  var that = this;
+  records = Util.AddEntriesFromCursorTo(cursor,records);
+
+  //loop through available pages, populating records
+  while(cursor.currentPageIndex < cursor.totalPages - 1) {
+    navigator.smartstore.moveCursorToNextPage(cursor, function(){
+      records = Util.AddEntriesFromCursorTo(cursor,records);
+    });
+  }
+  return records;
+}
+
+/**
+ * define handler for paging from SmartStore query
+ **/
+Util.AddEntriesFromCursorTo = function(cursor,records) {
+  console.log('Password.prototype.addEntriesFromCursorTo');
+  var curPageEntries = cursor.currentPageOrderedEntries;
+  $j.each(curPageEntries, function(i,entry) {
+    records.push(entry);
+  });
+  return records;
+}
