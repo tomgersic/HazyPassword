@@ -17,13 +17,9 @@ function init() {
         if(fieldsChanged) {
           console.log('Fields Changed... Saving');
           var page = $('#edit');
-          console.log('mark');
           var idField = page.find('#id');
-          console.log('mark');
           var usernameField = page.find('#username');
-          console.log('mark');
           var passwordField = page.find('#password');
-          console.log('mark');
           updateRecord(idField.val(),usernameField.val(),passwordField.val());
         }
         fieldsChanged=false;
@@ -148,12 +144,16 @@ function loadRecordsFromSmartstore(){
 /**
  * Load record with Id from Smartstore
  **/
-function loadRecordWithIdFromSmartstore(Id){
-    var querySpec = navigator.smartstore.buildExactQuerySpec("Id", Id, 1);
-        
+function loadRecordWithIdFromSmartstore(Id,callback,error){
+  console.log("Load Record With Id From Smartstore");
+    var querySpec = navigator.smartstore.buildExactQuerySpec("Id", Id, 2000);
     navigator.smartstore.querySoup('Password__c',querySpec,
-                                  function(cursor) { onSuccessQuerySoup(cursor); },
-                                  onError);
+                                  function(cursor) { 
+                                      var records = [];
+                                      records = loadAllRecords(cursor,records);
+                                      callback(records);
+                                  },
+                                  error);
 }
 
 /**
@@ -163,7 +163,10 @@ function updateRecord(Id,username,password) {
   console.log('Updating Records');
   forcetkClient.update('Password__c',Id,{"Username__c":username,"Password__c":password},function(){
     console.log('SFDC Update Success!');
-
+    loadRecordWithIdFromSmartstore(Id,function(records){
+      console.log('Smartstore record loaded');
+      console.log(records);
+    },onError);
   },onError);
 }
 
@@ -234,7 +237,9 @@ function populateListview(records){
   passwordList.listview( "refresh" );    
 }
 
-//define handler for paging
+/**
+ * define handler for paging from SmartStore query
+ **/
 function addEntriesFromCursorTo(cursor,records) {
     var curPageEntries = cursor.currentPageOrderedEntries;
     $j.each(curPageEntries, function(i,entry) {
@@ -244,21 +249,29 @@ function addEntriesFromCursorTo(cursor,records) {
 }
 
 /**
+ * load all records from all pages for the specified cursor into the specified array
+ **/
+function loadAllRecords(cursor,records){
+  //add the first page of results to records
+  records = addEntriesFromCursorTo(cursor,records);
+
+  //loop through available pages, populating records
+  while(cursor.currentPageIndex < cursor.totalPages - 1) {
+      navigator.smartstore.moveCursorToNextPage(cursor, function(){
+        records = addEntriesFromCursorTo(cursor,records);
+      });
+  }
+  return records;
+}
+
+/**
  * Soup Successfully Queried
  **/
 function onSuccessQuerySoup(cursor) {
     console.log("onSuccessQuerySoup()");
     var records = [];
 
-    //add the first page of results to records
-    records = addEntriesFromCursorTo(cursor,records);
-
-    //loop through available pages, populating records
-    while(cursor.currentPageIndex < cursor.totalPages - 1) {
-        navigator.smartstore.moveCursorToNextPage(cursor, function(){
-          records = addEntriesFromCursorTo(cursor,records);
-        });
-    }
+    records = loadAllRecords(cursor,records);
     
     //close the query cursor
     navigator.smartstore.closeCursor(cursor);
