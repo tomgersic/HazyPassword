@@ -20,24 +20,36 @@ OfflineQueue.QueueRecords = function(records,error){
 OfflineQueue.UploadQueue = function(callback,error) {
 	console.log("OfflineQueue.UploadQueue");
 	if(Util.checkConnection()) {
-		OfflineQueue.LoadRecordsFromQueue(function(records) {
-			if(records.length==0){
+
+		navigator.smartstore.soupExists('Queue',function(param){
+			if(param)
+			{
+				OfflineQueue.LoadRecordsFromQueue(function(records) {
+					if(records.length==0){
+						callback();
+					}
+					else {				
+						for(i in records){
+							forcetkClient.update('Password__c',records[i].Id,{"Username__c":records[i].Username__c,"Password__c":records[i].Password__c},function(){
+								console.log('QUEUED SFDC Update Success!');
+								navigator.smartstore.removeFromSoup('Queue',[records[i]._soupEntryId],function(){
+									console.log('Removed from Soup');
+									if(i == records.length-1) {
+										callback();
+									}
+								},error);
+							},error);				
+						}
+					}
+				},error);
+			}
+			else {
+				console.log("Offline queue doesn't exist yet... must not be any records there...")
 				callback();
 			}
-			else {				
-				for(i in records){
-					forcetkClient.update('Password__c',records[i].Id,{"Username__c":records[i].Username__c,"Password__c":records[i].Password__c},function(){
-						console.log('QUEUED SFDC Update Success!');
-						navigator.smartstore.removeFromSoup('Queue',[records[i]._soupEntryId],function(){
-							console.log('Removed from Soup');
-							if(i == records.length-1) {
-								callback();
-							}
-						},error);
-					},error);				
-				}
-			}
 		},error);
+
+
 	}
 	else {
 		console.log("We're offline, can't upload queue... how'd we even get here?")
