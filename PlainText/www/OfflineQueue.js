@@ -20,7 +20,7 @@ OfflineQueue.QueueRecords = function(records,error){
 OfflineQueue.UploadQueue = function(callback,error) {
 	console.log("OfflineQueue.UploadQueue");
 	if(Util.checkConnection()) {
-
+        //DF12 DEMO 21 -- UPLOAD QUEUE TO SFDC
 		navigator.smartstore.soupExists('Queue',function(param){
 			if(param)
 			{
@@ -32,6 +32,7 @@ OfflineQueue.UploadQueue = function(callback,error) {
 						for(i in records){
 							forcetkClient.update('Password__c',records[i].Id,{"Username__c":records[i].Username__c,"Password__c":records[i].Password__c},function(){
 								console.log('QUEUED SFDC Update Success!');
+                                //DF12 DEMO 22 -- ON SUCCESS, REMOVE RECORD FROM QUEUE
 								navigator.smartstore.removeFromSoup('Queue',[records[i]._soupEntryId],function(){
 									console.log('Removed from Soup');
 									if(i == records.length-1) {
@@ -80,6 +81,8 @@ OfflineQueue.LoadRecordsFromQueue = function(callback,error){
  **/
 OfflineQueue.StoreRecords = function(records,error){
 	console.log('OfflineQueue.storeRecords');
+    //DF12 DEMO 9 -- SMARTSTORE UPSERT
+    //GOTO DF12 7
 	navigator.smartstore.upsertSoupEntriesWithExternalId('Password__c',records, 'Id', function(){
 		console.log("Soup Upsert Success");        
 	}, error);

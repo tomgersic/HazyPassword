@@ -1,12 +1,15 @@
 //Sample code for Hybrid REST Explorer
+//DF12 DEMO 4 -- FAKE OFFLINE
 var FAKE_OFFLINE = false;
 var fieldsChanged = false;
 var passwordManager;
 
 function init() {
+  //DF12 DEMO 5 -- INSTANTIATE AND LOAD RECORDS
   passwordManager = new Password();
   passwordManager.loadRecords(onError);
   
+  //DF12 DEMO 20 -- PUSH QUEUE TO SFDC
   OfflineQueue.UploadQueue(function(){},onError);
 
   $j('#btnRefresh').click(function() {
@@ -24,6 +27,7 @@ function init() {
           var idField = page.find('#id');
           var usernameField = page.find('#username');
           var passwordField = page.find('#password');
+          //DF12 DEMO 16 -- SAVE RECORDS ON BACK FROM EDIT
           passwordManager.updateRecord(idField.val(),usernameField.val(),passwordField.val(),onError);
         }
         fieldsChanged=false;
@@ -41,6 +45,7 @@ function init() {
  * Change to Edit Page
  **/
 function changeToEditPage(url,event) {
+    //DF12 DEMO 15 -- LOAD EDIT PAGE
     //url scheme is a bit mucked up, so get rid of the initial "edit?" after the hash so we can parse it like a normal url
     var paramstring = url.hash.replace(/^#edit\?/,"#");
     //get the id, username, and password from the query string
