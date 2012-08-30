@@ -83,7 +83,7 @@ Password.prototype.loadRecordWithIdFromSmartstore = function(Id,callback,error){
     navigator.smartstore.querySoup('Password__c',querySpec,
                                   function(cursor) { 
                                       var records = [];
-                                      records = that.loadAllRecords(cursor,records);
+                                      records = Util.LoadAllRecords(cursor,records);
                                       callback(records);
                                   },
                                   error);
