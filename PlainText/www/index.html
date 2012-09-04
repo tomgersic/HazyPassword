@@ -18,7 +18,12 @@
     <script src="jquery/jquery.url.js"></script>
         
     <!-- include cordova / callback -->
-	<script type="text/javascript" charset="utf-8" src="cordova-1.8.1.js"></script>
+    <script src="cordova-1.8.1.js"></script>
+    
+    <!-- include local utility functionality -->
+    <link rel="stylesheet" type="text/css" href="SFHybridApp.css" />
+    <script type="text/javascript" charset="utf-8" src="SFHybridApp.js"></script>
+
     <!-- required for oauth plugin support -->    
     <script type="text/javascript" src="SalesforceOAuthPlugin.js"></script>
 
@@ -28,9 +33,7 @@
     <!-- include forcetk for REST transaction support -->
     <script src="forcetk.js"></script>
     
-    <!-- include local utility functionality -->
-    <link rel="stylesheet" type="text/css" href="SFHybridApp.css" />
-    <script type="text/javascript" charset="utf-8" src="SFHybridApp.js"></script>
+
 
     <!-- Custom Classes -->
     <script src="Password.js"></script>
@@ -45,19 +48,21 @@
 
     var forcetkClient;
     var debugMode = true;
+    var logToConsole = cordova.require("salesforce/util/logger").logToConsole;
 
     jQuery(document).ready(function() {
         //Add event listeners and so forth here
-        SFHybridApp.logToConsole("onLoad: jquery ready");
-		document.addEventListener("deviceready", onDeviceReady,false);
+        logToConsole("onLoad: jquery ready");
+    document.addEventListener("deviceready", onDeviceReady,false);
 
     });
 
+
     // When this function is called, Cordova has been initialized and is ready to roll 
     function onDeviceReady() {
-        SFHybridApp.logToConsole("onDeviceReady: Cordova ready");
+        logToConsole("onDeviceReady: Cordova ready");
 		  //Call getAuthCredentials to get the initial session credentials
-        SalesforceOAuthPlugin.getAuthCredentials(salesforceSessionRefreshed, getAuthCredentialsError);
+        cordova.require("salesforce/plugin/oauth").getAuthCredentials(salesforceSessionRefreshed, getAuthCredentialsError);
 
         //register to receive notifications when autoRefreshOnForeground refreshes the sfdc session
         document.addEventListener("salesforceSessionRefresh",salesforceSessionRefreshed,false);
@@ -65,12 +70,18 @@
         
 
     function salesforceSessionRefreshed(creds) {
-        SFHybridApp.logToConsole("salesforceSessionRefreshed");
+        logToConsole("salesforceSessionRefreshed");
 		
-        forcetkClient = new forcetk.Client(creds.clientId, creds.loginUrl);
-        forcetkClient.setSessionToken(creds.accessToken, apiVersion, creds.instanceUrl);
-        forcetkClient.setRefreshToken(creds.refreshToken);
-        forcetkClient.setUserAgentString(creds.userAgent);
+        // Depending on how we come into this method, `creds` may be callback data from the auth
+        // plugin, or an event fired from the plugin.  The data is different between the two.
+        var credsData = creds;
+        if (creds.data)  // Event sets the `data` object with the auth data.
+            credsData = creds.data;
+
+        forcetkClient = new forcetk.Client(credsData.clientId, credsData.loginUrl);
+        forcetkClient.setSessionToken(credsData.accessToken, apiVersion, credsData.instanceUrl);
+        forcetkClient.setRefreshToken(credsData.refreshToken);
+        forcetkClient.setUserAgentString(credsData.userAgent);
 
         //enable buttons
         init();
