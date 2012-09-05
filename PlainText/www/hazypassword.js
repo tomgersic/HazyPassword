@@ -5,6 +5,7 @@ var fieldsChanged = false;
 var passwordManager;
 
 function init() {
+    console.log('APPLICATION INIT');
   //DF12 DEMO 5 -- INSTANTIATE AND LOAD RECORDS
   passwordManager = new Password();
   passwordManager.loadRecords(onError);

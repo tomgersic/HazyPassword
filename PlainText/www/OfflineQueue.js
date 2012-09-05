@@ -20,15 +20,19 @@ OfflineQueue.QueueRecords = function(records,error){
 OfflineQueue.UploadQueue = function(callback,error) {
 	console.log("OfflineQueue.UploadQueue");
 	if(Util.checkConnection()) {
+      	console.log("OfflineQueue.UploadQueue -- app is online");
         //DF12 DEMO 21 -- UPLOAD QUEUE TO SFDC
 		navigator.smartstore.soupExists('Queue',function(param){
 			if(param)
 			{
+                console.log("OfflineQueue.UploadQueue -- Queue exists");
 				OfflineQueue.LoadRecordsFromQueue(function(records) {
 					if(records.length==0){
+                       	console.log("OfflineQueue.UploadQueue -- no records in queue");
 						callback();
 					}
 					else {				
+                        console.log("OfflineQueue.UploadQueue -- iterating records");
 						for(i in records){
 							forcetkClient.update('Password__c',records[i].Id,{"Username__c":records[i].Username__c,"Password__c":records[i].Password__c},function(){
 								console.log('QUEUED SFDC Update Success!');

@@ -403,7 +403,6 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/SalesforceHybridSDK-fwrwyfpxsjdzkwcrdrngcvlxiqmz/Build/Products/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)/PlainText\"",
 					"\"$(SRCROOT)/../../R&D/TestPinLock/TestPinLock\"",
 				);
@@ -420,7 +419,6 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/SalesforceHybridSDK-fwrwyfpxsjdzkwcrdrngcvlxiqmz/Build/Products/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)/PlainText\"",
 					"\"$(SRCROOT)/../../R&D/TestPinLock/TestPinLock\"",
 				);

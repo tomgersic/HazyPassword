@@ -53,7 +53,7 @@ Util.LoadAllRecords = function(cursor,records){
  * define handler for paging from SmartStore query
  **/
 Util.AddEntriesFromCursorTo = function(cursor,records) {
-  console.log('Password.prototype.addEntriesFromCursorTo');
+  console.log('Util.addEntriesFromCursorTo');
   var curPageEntries = cursor.currentPageOrderedEntries;
   $j.each(curPageEntries, function(i,entry) {
     records.push(entry);
