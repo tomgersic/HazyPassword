@@ -24,7 +24,7 @@
 		FA14DD1F15C9F11A00F45FE9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA14DD1E15C9F11A00F45FE9 /* SystemConfiguration.framework */; };
 		FA14DD2515C9F11A00F45FE9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA14DD2315C9F11A00F45FE9 /* InfoPlist.strings */; };
 		FA14DD2715C9F11A00F45FE9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FA14DD2615C9F11A00F45FE9 /* main.m */; };
-		FA14DD2915C9F11A00F45FE9 /* PlainText-Prefix.pch in Resources */ = {isa = PBXBuildFile; fileRef = FA14DD2815C9F11A00F45FE9 /* PlainText-Prefix.pch */; };
+		FA14DD2915C9F11A00F45FE9 /* HazyPassword-Prefix.pch in Resources */ = {isa = PBXBuildFile; fileRef = FA14DD2815C9F11A00F45FE9 /* HazyPassword-Prefix.pch */; };
 		FA14DD4A15C9F11C00F45FE9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FA14DD4915C9F11C00F45FE9 /* libz.dylib */; };
 		FA14DD4E15C9F11C00F45FE9 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FA14DD4D15C9F11C00F45FE9 /* icon-72.png */; };
 		FA14DD5015C9F11C00F45FE9 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FA14DD4F15C9F11C00F45FE9 /* icon.png */; };
@@ -57,7 +57,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		FA14DCFE15C9F11A00F45FE9 /* PlainText.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlainText.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA14DCFE15C9F11A00F45FE9 /* HazyPassword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HazyPassword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA14DD0215C9F11A00F45FE9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FA14DD0415C9F11A00F45FE9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FA14DD0615C9F11A00F45FE9 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -73,10 +73,10 @@
 		FA14DD1A15C9F11A00F45FE9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FA14DD1C15C9F11A00F45FE9 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		FA14DD1E15C9F11A00F45FE9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		FA14DD2215C9F11A00F45FE9 /* PlainText-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PlainText-Info.plist"; sourceTree = "<group>"; };
+		FA14DD2215C9F11A00F45FE9 /* HazyPassword-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HazyPassword-Info.plist"; sourceTree = "<group>"; };
 		FA14DD2415C9F11A00F45FE9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FA14DD2615C9F11A00F45FE9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		FA14DD2815C9F11A00F45FE9 /* PlainText-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlainText-Prefix.pch"; sourceTree = "<group>"; };
+		FA14DD2815C9F11A00F45FE9 /* HazyPassword-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HazyPassword-Prefix.pch"; sourceTree = "<group>"; };
 		FA14DD4915C9F11C00F45FE9 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
 		FA14DD4D15C9F11C00F45FE9 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-72.png"; path = "Resources/icons/icon-72.png"; sourceTree = "<group>"; };
 		FA14DD4F15C9F11C00F45FE9 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = Resources/icons/icon.png; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 		FA14DCFF15C9F11A00F45FE9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FA14DCFE15C9F11A00F45FE9 /* PlainText.app */,
+				FA14DCFE15C9F11A00F45FE9 /* HazyPassword.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -184,10 +184,10 @@
 		FA14DD2115C9F11A00F45FE9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				FA14DD2215C9F11A00F45FE9 /* PlainText-Info.plist */,
+				FA14DD2215C9F11A00F45FE9 /* HazyPassword-Info.plist */,
 				FA14DD2315C9F11A00F45FE9 /* InfoPlist.strings */,
 				FA14DD2615C9F11A00F45FE9 /* main.m */,
-				FA14DD2815C9F11A00F45FE9 /* PlainText-Prefix.pch */,
+				FA14DD2815C9F11A00F45FE9 /* HazyPassword-Prefix.pch */,
 				FA14DD6715C9F11C00F45FE9 /* Cordova.plist */,
 			);
 			name = "Supporting Files";
@@ -244,9 +244,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FA14DCFD15C9F11A00F45FE9 /* PlainText */ = {
+		FA14DCFD15C9F11A00F45FE9 /* HazyPassword */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FA14DD6F15C9F11D00F45FE9 /* Build configuration list for PBXNativeTarget "PlainText" */;
+			buildConfigurationList = FA14DD6F15C9F11D00F45FE9 /* Build configuration list for PBXNativeTarget "HazyPassword" */;
 			buildPhases = (
 				FA14DCF815C9F11A00F45FE9 /* Sources */,
 				FA14DCF915C9F11A00F45FE9 /* Frameworks */,
@@ -258,9 +258,9 @@
 			);
 			dependencies = (
 			);
-			name = PlainText;
+			name = HazyPassword;
 			productName = PlainText;
-			productReference = FA14DCFE15C9F11A00F45FE9 /* PlainText.app */;
+			productReference = FA14DCFE15C9F11A00F45FE9 /* HazyPassword.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -271,7 +271,7 @@
 			attributes = {
 				LastUpgradeCheck = 0430;
 			};
-			buildConfigurationList = FA14DCF615C9F11A00F45FE9 /* Build configuration list for PBXProject "PlainText" */;
+			buildConfigurationList = FA14DCF615C9F11A00F45FE9 /* Build configuration list for PBXProject "HazyPassword" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -283,7 +283,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FA14DCFD15C9F11A00F45FE9 /* PlainText */,
+				FA14DCFD15C9F11A00F45FE9 /* HazyPassword */,
 			);
 		};
 /* End PBXProject section */
@@ -294,7 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA14DD2515C9F11A00F45FE9 /* InfoPlist.strings in Resources */,
-				FA14DD2915C9F11A00F45FE9 /* PlainText-Prefix.pch in Resources */,
+				FA14DD2915C9F11A00F45FE9 /* HazyPassword-Prefix.pch in Resources */,
 				FA14DD4E15C9F11C00F45FE9 /* icon-72.png in Resources */,
 				FA14DD5015C9F11C00F45FE9 /* icon.png in Resources */,
 				FA14DD5215C9F11C00F45FE9 /* icon@2x.png in Resources */,
@@ -408,9 +408,9 @@
 					"\"$(SRCROOT)/../../R&D/TestPinLock/TestPinLock\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PlainText/PlainText-Prefix.pch";
-				INFOPLIST_FILE = "PlainText/PlainText-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "PlainText/HazyPassword-Prefix.pch";
+				INFOPLIST_FILE = "PlainText/HazyPassword-Info.plist";
+				PRODUCT_NAME = HazyPassword;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -425,9 +425,9 @@
 					"\"$(SRCROOT)/../../R&D/TestPinLock/TestPinLock\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PlainText/PlainText-Prefix.pch";
-				INFOPLIST_FILE = "PlainText/PlainText-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "PlainText/HazyPassword-Prefix.pch";
+				INFOPLIST_FILE = "PlainText/HazyPassword-Info.plist";
+				PRODUCT_NAME = HazyPassword;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -435,7 +435,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FA14DCF615C9F11A00F45FE9 /* Build configuration list for PBXProject "PlainText" */ = {
+		FA14DCF615C9F11A00F45FE9 /* Build configuration list for PBXProject "HazyPassword" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FA14DD6D15C9F11D00F45FE9 /* Debug */,
@@ -444,7 +444,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FA14DD6F15C9F11D00F45FE9 /* Build configuration list for PBXNativeTarget "PlainText" */ = {
+		FA14DD6F15C9F11D00F45FE9 /* Build configuration list for PBXNativeTarget "HazyPassword" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FA14DD7015C9F11D00F45FE9 /* Debug */,
