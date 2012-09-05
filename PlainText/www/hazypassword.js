@@ -28,8 +28,16 @@ function init() {
           var idField = page.find('#id');
           var usernameField = page.find('#username');
           var passwordField = page.find('#password');
+          var nameField = page.find('#name');
+          var urlField = page.find('#url');
           //DF12 DEMO 16 -- SAVE RECORDS ON BACK FROM EDIT
-          passwordManager.updateRecord(idField.val(),usernameField.val(),passwordField.val(),onError);
+          var fieldData = {'id':idField.val(),
+                           'username':usernameField.val(),
+                           'password':passwordField.val(),
+                           'url':urlField.val(),
+                           'name':nameField.val()
+                          }
+          passwordManager.updateRecord(fieldData,onError);
         }
         fieldsChanged=false;
 
@@ -76,6 +84,10 @@ function changeToEditPage(url,event) {
         usernameField.val(username);
         var passwordField = content.find('#password');
         passwordField.val(password);
+        var nameField = content.find('#name');
+        nameField.val(name);
+        var urlField = content.find('#url');
+        urlField.val(siteUrl);
 
         //monitor for changes to fields
         usernameField.change(function(){
@@ -87,6 +99,16 @@ function changeToEditPage(url,event) {
             console.log('password changed');
             fieldsChanged=true;
         });
+
+        nameField.change(function(){
+            console.log('name changed');
+            fieldsChanged=true;
+        });
+
+        urlField.change(function(){
+            console.log('url changed');
+            fieldsChanged=true;
+        });        
 
         //we're intercepting the page change event, so change the page
         $.mobile.changePage(page);

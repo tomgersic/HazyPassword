@@ -92,22 +92,24 @@ Password.prototype.loadRecordWithIdFromSmartstore = function(Id,callback,error){
 /**
  * Update an entry changed by the user
  **/
-Password.prototype.updateRecord = function(Id,username,password,error) {
+Password.prototype.updateRecord = function(fieldData,error) {
 	console.log('Password.prototype.updateRecord');
 	var that=this;
     //DF12 DEMO 17 -- UPDATE SMARTSTORE RECORD
-	that.loadRecordWithIdFromSmartstore(Id,function(records){
+	that.loadRecordWithIdFromSmartstore(fieldData.id,function(records){
 		console.log('Smartstore record loaded');
 		//upate username/password
-		records[0].Username__c = username;
-		records[0].Password__c = password;
+		records[0].Username__c = fieldData.username;
+		records[0].Password__c = fieldData.password;
+		records[0].URL__c = fieldData.url;
+		records[0].Name = fieldData.name;
 		OfflineQueue.StoreRecords(records,error);
 		that.loadRecords(error);
 	},error);
 
     //DF12 DEMO 18 -- SAVE TO SALESFORCE IF ONLINE
 	if(Util.checkConnection()) {
-		forcetkClient.update('Password__c',Id,{"Username__c":username,"Password__c":password},function(){
+		forcetkClient.update('Password__c',fieldData.id,{"Username__c":fieldData.username,"Password__c":fieldData.password,"URL__c":fieldData.url,"Name":fieldData.name},function(){
 			console.log('SFDC Update Success!');
 		},error);
 	}
