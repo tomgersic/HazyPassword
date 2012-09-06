@@ -6,6 +6,7 @@ function OfflineQueue() {
  * Queue for later upload
  **/
 OfflineQueue.QueueRecords = function(records,error){
+    //DF12 DEMO 19 -- REGISTER QUEUE SOUP AND STORE QUEUE RECORDS
 	console.log('OfflineQueue.QueueRecords');	
 	OfflineQueue.RegisterQueueSoup(function(){
 		navigator.smartstore.upsertSoupEntriesWithExternalId('Queue',records, 'Id', function(){
@@ -21,7 +22,7 @@ OfflineQueue.UploadQueue = function(callback,error) {
 	console.log("OfflineQueue.UploadQueue");
 	if(Util.checkConnection()) {
       	console.log("OfflineQueue.UploadQueue -- app is online");
-        //DF12 DEMO 21 -- UPLOAD QUEUE TO SFDC
+        //DF12 DEMO 23 -- UPLOAD QUEUE TO SFDC
 		navigator.smartstore.soupExists('Queue',function(param){
 			if(param)
 			{
@@ -36,7 +37,7 @@ OfflineQueue.UploadQueue = function(callback,error) {
 						for(i in records){
 							forcetkClient.update('Password__c',records[i].Id,{"Username__c":records[i].Username__c,"Password__c":records[i].Password__c,"Name":records[i].Name,"URL__c":records[i].URL__c},function(){
 								console.log('QUEUED SFDC Update Success!');
-                                //DF12 DEMO 22 -- ON SUCCESS, REMOVE RECORD FROM QUEUE
+                                //DF12 DEMO 24 -- ON SUCCESS, REMOVE RECORD FROM QUEUE
 								navigator.smartstore.removeFromSoup('Queue',[records[i]._soupEntryId],function(){
 									console.log('Removed from Soup');
 									if(i == records.length-1) {
@@ -91,6 +92,7 @@ OfflineQueue.StoreRecords = function(records,error){
 		console.log("Soup Upsert Success");        
 	}, error);
 
+    //DF12 DEMO 18 -- QUEUE THE RECORDS IF WE'RE OFFLINE
 	//if we're not connected, queue the records
 	if(!Util.checkConnection()){
 		OfflineQueue.QueueRecords(records,error);

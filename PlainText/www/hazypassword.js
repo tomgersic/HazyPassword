@@ -10,7 +10,7 @@ function init() {
   passwordManager = new Password();
   passwordManager.loadRecords(onError);
   
-  //DF12 DEMO 20 -- PUSH QUEUE TO SFDC
+  //DF12 DEMO 22 -- PUSH QUEUE TO SFDC
   OfflineQueue.UploadQueue(function(){},onError);
 
   $j('#btnRefresh').click(function() {

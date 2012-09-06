@@ -10,7 +10,8 @@ var debugMode = true;
 
 // The client ID value specified for your remote access object that defines
 // your application in Salesforce.
-var remoteAccessConsumerKey = "3MVG9rFJvQRVOvk5SFdm9FMJuVGYi_8z7P0r_ukfE_E2nOeWwmGDFN4Vtvlr1INuI1Q8TMbthNd4TVFomfiP0";
+var remoteAccessConsumerKey = "3MVG9rFJvQRVOvk5SFdm9FMJuVGYi_8z7P0r_ukfE_E2nOeWwmGDFN4Vtvlr1INuI1Q8TMbthNd4TVFomfiP0"; //83 PIN
+//var remoteAccessConsumerKey = "3MVG9rFJvQRVOvk5SFdm9FMJuVCphyMRfRyEiBMTO867XelwXc_BFFm1Kd_8VF.a4iISROYbyGsVpdIyGvslp"; //83 No PIN
 
 // The redirect URI value specified for your remote access object that defines
 // your application in Salesforce.

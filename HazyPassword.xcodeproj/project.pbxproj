@@ -41,7 +41,7 @@
 		FA14DD6A15C9F11C00F45FE9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FA14DD6915C9F11C00F45FE9 /* Settings.bundle */; };
 		FA14DD6C15C9F11D00F45FE9 /* CordovaResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FA14DD6B15C9F11D00F45FE9 /* CordovaResources.bundle */; };
 		FA14DD7315C9F1A000F45FE9 /* www in Resources */ = {isa = PBXBuildFile; fileRef = FA14DD7215C9F1A000F45FE9 /* www */; };
-		FAAE97E015CC93FD007FAA4F /* SalesforceHybridSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAAE97DF15CC93FD007FAA4F /* SalesforceHybridSDK.framework */; };
+		FADE2A5E15F8D20300074AAF /* SalesforceHybridSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADE2A5D15F8D20300074AAF /* SalesforceHybridSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -94,7 +94,7 @@
 		FA14DD6915C9F11C00F45FE9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		FA14DD6B15C9F11D00F45FE9 /* CordovaResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CordovaResources.bundle; sourceTree = "<group>"; };
 		FA14DD7215C9F1A000F45FE9 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
-		FAAE97DF15CC93FD007FAA4F /* SalesforceHybridSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SalesforceHybridSDK.framework; path = "../../R&D/TestPinLock/TestPinLock/SalesforceHybridSDK.framework"; sourceTree = "<group>"; };
+		FADE2A5D15F8D20300074AAF /* SalesforceHybridSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SalesforceHybridSDK.framework; path = "../../../Library/Developer/Xcode/DerivedData/SalesforceHybridSDK-fwrwyfpxsjdzkwcrdrngcvlxiqmz/Build/Products/Debug-iphonesimulator/SalesforceHybridSDK.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,7 +118,7 @@
 				FA14DD1D15C9F11A00F45FE9 /* MediaPlayer.framework in Frameworks */,
 				FA14DD1F15C9F11A00F45FE9 /* SystemConfiguration.framework in Frameworks */,
 				FA14DD4A15C9F11C00F45FE9 /* libz.dylib in Frameworks */,
-				FAAE97E015CC93FD007FAA4F /* SalesforceHybridSDK.framework in Frameworks */,
+				FADE2A5E15F8D20300074AAF /* SalesforceHybridSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,7 +128,7 @@
 		FA14DCF115C9F11A00F45FE9 = {
 			isa = PBXGroup;
 			children = (
-				FAAE97DF15CC93FD007FAA4F /* SalesforceHybridSDK.framework */,
+				FADE2A5D15F8D20300074AAF /* SalesforceHybridSDK.framework */,
 				FA14DD2015C9F11A00F45FE9 /* PlainText */,
 				FA14DD0115C9F11A00F45FE9 /* Frameworks */,
 				FA14DCFF15C9F11A00F45FE9 /* Products */,
@@ -404,6 +404,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/PlainText\"",
+					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/SalesforceHybridSDK-fwrwyfpxsjdzkwcrdrngcvlxiqmz/Build/Products/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)/../../R&D/TestPinLock/TestPinLock\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -420,6 +421,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/PlainText\"",
+					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/SalesforceHybridSDK-fwrwyfpxsjdzkwcrdrngcvlxiqmz/Build/Products/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)/../../R&D/TestPinLock/TestPinLock\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

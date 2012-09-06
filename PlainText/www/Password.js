@@ -32,7 +32,7 @@ Password.prototype.loadRecordsFromSalesforce = function(soupExists,error) {
 	if(Util.checkConnection()){
 		console.log('We are online...');
 		console.log('Upload any queued records from offline first');
-        //DF12 DEMO 19 -- PUSH QUEUE TO SFDC
+        //DF12 DEMO 21 -- PUSH QUEUE TO SFDC
 		OfflineQueue.UploadQueue(function(){
 			console.log('We are online... querying SFDC');
             //DF12 DEMO 7 -- QUERY FROM SALESFORCE USING FORCETK
@@ -103,11 +103,12 @@ Password.prototype.updateRecord = function(fieldData,error) {
 		records[0].Password__c = fieldData.password;
 		records[0].URL__c = fieldData.url;
 		records[0].Name = fieldData.name;
+        //GOTO DEMO 18
 		OfflineQueue.StoreRecords(records,error);
 		that.loadRecords(error);
 	},error);
 
-    //DF12 DEMO 18 -- SAVE TO SALESFORCE IF ONLINE
+    //DF12 DEMO 20 -- SAVE TO SALESFORCE IF ONLINE
 	if(Util.checkConnection()) {
 		forcetkClient.update('Password__c',fieldData.id,{"Username__c":fieldData.username,"Password__c":fieldData.password,"URL__c":fieldData.url,"Name":fieldData.name},function(){
 			console.log('SFDC Update Success!');
