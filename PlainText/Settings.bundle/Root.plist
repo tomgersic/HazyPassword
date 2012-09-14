@@ -36,7 +36,7 @@
 			<key>Title</key>
 			<string>LOGIN_HOST_TITLE</string>
 			<key>DefaultValue</key>
-			<string>login.database.com</string>
+			<string>login.salesforce.com</string>
 			<key>Titles</key>
 			<array>
 				<string>PRODUCTION_LOGIN_HOST_TITLE</string>
@@ -45,7 +45,7 @@
 			</array>
 			<key>Values</key>
 			<array>
-				<string>login.database.com</string>
+				<string>login.salesforce.com</string>
 				<string>test.salesforce.com</string>
 				<string>CUSTOM</string>
 			</array>

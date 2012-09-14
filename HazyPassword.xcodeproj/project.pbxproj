@@ -410,6 +410,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PlainText/HazyPassword-Prefix.pch";
 				INFOPLIST_FILE = "PlainText/HazyPassword-Info.plist";
+				OTHER_CFLAGS = "-fstack-protector-all";
 				PRODUCT_NAME = HazyPassword;
 				WRAPPER_EXTENSION = app;
 			};
@@ -427,6 +428,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PlainText/HazyPassword-Prefix.pch";
 				INFOPLIST_FILE = "PlainText/HazyPassword-Info.plist";
+				OTHER_CFLAGS = "-fstack-protector-all";
 				PRODUCT_NAME = HazyPassword;
 				WRAPPER_EXTENSION = app;
 			};
