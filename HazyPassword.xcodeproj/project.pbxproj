@@ -404,8 +404,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/PlainText\"",
-					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/SalesforceHybridSDK-fwrwyfpxsjdzkwcrdrngcvlxiqmz/Build/Products/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/../../R&D/TestPinLock/TestPinLock\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PlainText/HazyPassword-Prefix.pch";
@@ -419,17 +417,17 @@
 		FA14DD7115C9F11D00F45FE9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Model Metrics, Inc.";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/PlainText\"",
-					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/SalesforceHybridSDK-fwrwyfpxsjdzkwcrdrngcvlxiqmz/Build/Products/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/../../R&D/TestPinLock/TestPinLock\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PlainText/HazyPassword-Prefix.pch";
 				INFOPLIST_FILE = "PlainText/HazyPassword-Info.plist";
 				OTHER_CFLAGS = "-fstack-protector-all";
 				PRODUCT_NAME = HazyPassword;
+				PROVISIONING_PROFILE = "7A3FB5B5-6263-4F27-B421-9CD02676CD3C";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
