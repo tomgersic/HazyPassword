@@ -35,3 +35,7 @@ If you have questions about or issues with this demo, the best way to get help i
 
 #More Help!
 I work for [Model Metrics](http://www.modelmetrics.com/), a [Salesforce.com](http://www.salesforce.com) company. We do mobile apps (amongst other things), so if you need a mobile app), well, that's what we do!
+
+#Screenshot
+
+![Screenshot](https://raw.github.com/tomgersic/HazyPassword/master/PlainText/screenshot/screenshot.jpg "Screenshot")
