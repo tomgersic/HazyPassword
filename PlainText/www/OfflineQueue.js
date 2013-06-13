@@ -1,3 +1,10 @@
+/**
+ * OfflineQueue.js
+ * This class handles the queue functions that are written to any time a record is saved using 
+ * OfflineQueue.StoreRecords. The OfflineQueue.UploadQueue method takes care of emptying the
+ * queue and upserting the records to SFDC. Delete methods are left as an exercise for the reader.
+ **/
+
 function OfflineQueue() {
 
 }
@@ -6,7 +13,7 @@ function OfflineQueue() {
  * Queue for later upload
  **/
 OfflineQueue.QueueRecords = function(records,error){
-    //DF12 DEMO 19 -- REGISTER QUEUE SOUP AND STORE QUEUE RECORDS
+    //SFDEMO 12 -- REGISTER QUEUE SOUP AND STORE QUEUE RECORDS
 	console.log('OfflineQueue.QueueRecords');	
 	OfflineQueue.RegisterQueueSoup(function(){
 		navigator.smartstore.upsertSoupEntriesWithExternalId('Queue',records, 'Id', function(){
@@ -22,7 +29,7 @@ OfflineQueue.UploadQueue = function(callback,error) {
 	console.log("OfflineQueue.UploadQueue");
 	if(Util.checkConnection()) {
       	console.log("OfflineQueue.UploadQueue -- app is online");
-        //DF12 DEMO 23 -- UPLOAD QUEUE TO SFDC
+        //SFDEMO 15 -- UPLOAD QUEUE TO SFDC
 		navigator.smartstore.soupExists('Queue',function(param){
 			if(param)
 			{
@@ -37,7 +44,7 @@ OfflineQueue.UploadQueue = function(callback,error) {
 						for(i in records){
 							forcetkClient.update('Password__c',records[i].Id,{"Username__c":records[i].Username__c,"Password__c":records[i].Password__c,"Name":records[i].Name,"URL__c":records[i].URL__c},function(){
 								console.log('QUEUED SFDC Update Success!');
-                                //DF12 DEMO 24 -- ON SUCCESS, REMOVE RECORD FROM QUEUE
+                                //SFDEMO 16 -- ON SUCCESS, REMOVE RECORD FROM QUEUE
 								navigator.smartstore.removeFromSoup('Queue',[records[i]._soupEntryId],function(){
 									console.log('Removed from Soup');
 									if(i == records.length-1) {
@@ -86,13 +93,12 @@ OfflineQueue.LoadRecordsFromQueue = function(callback,error){
  **/
 OfflineQueue.StoreRecords = function(records,error){
 	console.log('OfflineQueue.storeRecords');
-    //DF12 DEMO 9 -- SMARTSTORE UPSERT
-    //GOTO DF12 7
+    //SFDEMO 3 -- SMARTSTORE UPSERT
 	navigator.smartstore.upsertSoupEntriesWithExternalId('Password__c',records, 'Id', function(){
 		console.log("Soup Upsert Success");        
 	}, error);
 
-    //DF12 DEMO 18 -- QUEUE THE RECORDS IF WE'RE OFFLINE
+    //SFDEMO 11 -- QUEUE THE RECORDS IF WE'RE OFFLINE
 	//if we're not connected, queue the records
 	if(!Util.checkConnection()){
 		OfflineQueue.QueueRecords(records,error);

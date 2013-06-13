@@ -73,12 +73,13 @@
 
     function salesforceSessionRefreshed(creds) {
         logToConsole("salesforceSessionRefreshed");
-		
         // Depending on how we come into this method, `creds` may be callback data from the auth
         // plugin, or an event fired from the plugin.  The data is different between the two.
         var credsData = creds;
         if (creds.data)  // Event sets the `data` object with the auth data.
             credsData = creds.data;
+		console.log("Access Token: "+credsData.accessToken);
+		console.log("Refresh Token: "+credsData.refreshToken);
 
         forcetkClient = new forcetk.Client(credsData.clientId, credsData.loginUrl);
         forcetkClient.setSessionToken(credsData.accessToken, apiVersion, credsData.instanceUrl);
@@ -98,7 +99,8 @@
 
   </head>
   <body>
-      <!--DF12 DEMO 1 -- LIST OF PASSWORDS -->
+      <!-- HTML LAYOUT -->
+      <!-- PASSWORD LISTVIEW -->
       <div data-role="page" data-theme="b" id="home"> 
           <div  data-role="header"> 
               <a id="btnRefresh" href="#" data-icon="refresh">Refresh</a>
@@ -109,7 +111,7 @@
             <ul class="passwordList" data-role="listview" data-inset="true" data-theme="c"></ul>
           </div> 
       </div>
-      <!--DF12 DEMO 2 -- PASSWORD DETAIL PAGE -->
+      <!-- PASSWORD DETAIL PAGE -->
       <div data-role="page" data-theme="b" id="edit" data-add-back-btn="true"> 
           <div data-role="header"> 
               <h1 id='title'>Password</h1> 
@@ -142,7 +144,7 @@
             </form>
           </div> 
       </div>
-      <!--DF12 DEMO 14 -- CLICK HANDLER-->
+      <!--CLICK HANDLER-->
       <script id="passwordItem" type="text/x-jquery-tmpl">
         <li data-messageId="${Id}" class="passwordItem">
           <a href="index.html#edit?Id=${Id}&Name=${encodeURIComponent(Name)}&Username__c=${encodeURIComponent(Username__c)}&Password__c=${encodeURIComponent(Password__c)}&URL__c=${encodeURIComponent(URL__c)}">

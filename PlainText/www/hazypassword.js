@@ -1,16 +1,25 @@
+/**
+ * hazypassword.js
+ * The code in here is just for some setup work. It could have been included in the index.html
+ * file, but I chose to put it in a separate file to keep things cleaner. Inside, we instantiate
+ * a new instance of the Password class that we’ll talk about in a moment, push any queued
+ * records left over from a previous session to SFDC using the OfflineQueue class, and set up
+ * some event listeners for page change operations.
+ **/
+
 //Sample code for Hybrid REST Explorer
-//DF12 DEMO 4 -- FAKE OFFLINE
+
 var FAKE_OFFLINE = false;
 var fieldsChanged = false;
 var passwordManager;
 
 function init() {
-    console.log('APPLICATION INIT');
-  //DF12 DEMO 5 -- INSTANTIATE AND LOAD RECORDS
+  console.log('APPLICATION INIT');
+  //SFDEMO X -- INSTANTIATE AND LOAD RECORDS
   passwordManager = new Password();
   passwordManager.loadRecords(onError);
   
-  //DF12 DEMO 22 -- PUSH QUEUE TO SFDC
+  //PUSH QUEUE TO SFDC
   OfflineQueue.UploadQueue(function(){},onError);
 
   $j('#btnRefresh').click(function() {
@@ -30,7 +39,7 @@ function init() {
           var passwordField = page.find('#password');
           var nameField = page.find('#name');
           var urlField = page.find('#url');
-          //DF12 DEMO 16 -- SAVE RECORDS ON BACK FROM EDIT
+          //SFDEMO 9 -- SAVE RECORDS ON BACK FROM EDIT
           var fieldData = {'id':idField.val(),
                            'username':usernameField.val(),
                            'password':passwordField.val(),
@@ -54,7 +63,7 @@ function init() {
  * Change to Edit Page
  **/
 function changeToEditPage(url,event) {
-    //DF12 DEMO 15 -- LOAD EDIT PAGE
+    //LOAD EDIT PAGE
     //url scheme is a bit mucked up, so get rid of the initial "edit?" after the hash so we can parse it like a normal url
     var paramstring = url.hash.replace(/^#edit\?/,"#");
     //get the id, username, and password from the query string

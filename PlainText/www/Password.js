@@ -1,3 +1,14 @@
+/**
+ * Password.js
+ * Manages the handling of Password records, both in Salesforce, and in Smartstore.
+ * You’ll notice that the loadRecords method checks to see if the Soup exists 
+ * (as shown in the Flow above), and if it does, loads records from it. If it 
+ * doesn’t, SFDC is queried instead, and the records are stored in Smartstore 
+ * using OfflineQueue.StoreRecords prior populating the listview. This class
+ * also includes methods to register the Password Soup to begin with, and upsert
+ * records changed by the user in the UI.
+ **/
+
 function Password () {
 
 }
@@ -8,15 +19,13 @@ function Password () {
 Password.prototype.loadRecords = function(error) {
 	console.log("Password.prototype.loadRecords");
 	var that = this;
-    //DF12 DEMO 6 -- DECIDE WHETHER TO QUERY SFDC OR SMARTSTORE
+    //SFDEMO X -- DECIDE WHETHER TO QUERY SFDC OR SMARTSTORE
 	//check if we have local records -- if we do, just load those
 	navigator.smartstore.soupExists('Password__c',function(param){
 		if(param){
-            //GOTO DF12 11
 			that.loadRecordsFromSmartstore(error);
 		}
 		else {
-            //GOTO DF12 7                        
 			that.loadRecordsFromSalesforce(false,error);
 		}
 	},error);
@@ -32,17 +41,14 @@ Password.prototype.loadRecordsFromSalesforce = function(soupExists,error) {
 	if(Util.checkConnection()){
 		console.log('We are online...');
 		console.log('Upload any queued records from offline first');
-        //DF12 DEMO 21 -- PUSH QUEUE TO SFDC
+        //SFDEMO 14 -- PUSH QUEUE TO SFDC
 		OfflineQueue.UploadQueue(function(){
 			console.log('We are online... querying SFDC');
-            //DF12 DEMO 7 -- QUERY FROM SALESFORCE USING FORCETK
-			forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){  
-                //GOTO DF12 8
+            //SFDEMO 4 -- QUERY FROM SALESFORCE USING FORCETK
+			forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){
                 that.registerPasswordSoup(function(){
-                    //GOTO DF12 9
 					OfflineQueue.StoreRecords(response.records,error);
 				},error);
-                //GOTO DF12 10
 				that.populateListview(response.records);
 			}, error); 
 		},onError);
@@ -64,8 +70,7 @@ Password.prototype.loadRecordsFromSalesforce = function(soupExists,error) {
 Password.prototype.loadRecordsFromSmartstore = function(error){
 	console.log("Password.prototype.loadRecordsFromSmartstore");
 	var that=this;
-    //DF12 DEMO 11 QUERY SMARTSTORE
-    //GOTO DF12 12
+    //SFDEMO 2 QUERY SMARTSTORE
     var querySpec = navigator.smartstore.buildAllQuerySpec("Id", null, 2000);
         
     navigator.smartstore.querySoup('Password__c',querySpec,
@@ -95,7 +100,7 @@ Password.prototype.loadRecordWithIdFromSmartstore = function(Id,callback,error){
 Password.prototype.updateRecord = function(fieldData,error) {
 	console.log('Password.prototype.updateRecord');
 	var that=this;
-    //DF12 DEMO 17 -- UPDATE SMARTSTORE RECORD
+    //SFDEMO 10 -- UPDATE SMARTSTORE RECORD
 	that.loadRecordWithIdFromSmartstore(fieldData.id,function(records){
 		console.log('Smartstore record loaded');
 		//upate username/password
@@ -108,7 +113,7 @@ Password.prototype.updateRecord = function(fieldData,error) {
 		that.loadRecords(error);
 	},error);
 
-    //DF12 DEMO 20 -- SAVE TO SALESFORCE IF ONLINE
+    //SFDEMO 13 -- SAVE TO SALESFORCE IF ONLINE
 	if(Util.checkConnection()) {
 		forcetkClient.update('Password__c',fieldData.id,{"Username__c":fieldData.username,"Password__c":fieldData.password,"URL__c":fieldData.url,"Name":fieldData.name},function(){
 			console.log('SFDC Update Success!');
@@ -124,8 +129,7 @@ Password.prototype.registerPasswordSoup = function(callback,error){
 	//check if the Password__c soup exists
 	navigator.smartstore.soupExists('Password__c',function(param){
 		if(!param){
-            //DF12 DEMO 8 -- REGISTER THE SOUP
-            //GOTO DF12 7
+            //SFDEMO 1 -- REGISTER THE SOUP
 			//Password__c soup doesn't exist, so let's register it
 			var indexSpec=[{"path":"Id","type":"string"},{"path":"Name","type":"string"}];
 			navigator.smartstore.registerSoup('Password__c',indexSpec,function(param){
@@ -147,8 +151,7 @@ Password.prototype.registerPasswordSoup = function(callback,error){
 Password.prototype.populateListview = function(records){
 	console.log('Password.prototype.populateListview');
 	
-    //DF12 DEMO 10 -- POPULATE THE LIST VIEW WITH PASSWORD RECORDS
-    //GOTO DF12 6
+    //SFDEMO 7 -- POPULATE THE LIST VIEW WITH PASSWORD RECORDS
     var passwordList = $( "#home" ).find( ".passwordList" );
 	passwordList.empty();
 	$( "#passwordItem" ).tmpl( records ).appendTo( passwordList );
@@ -164,12 +167,12 @@ Password.prototype.onSuccessQuerySoup = function(cursor) {
 	var that = this;
 	var records = [];
 
-    //DF12 DEMO 12 -- LOAD RECORDS
+    //Load Records
 	records = Util.LoadAllRecords(cursor,records);
 
 	//close the query cursor
 	navigator.smartstore.closeCursor(cursor);
 
-    //DF12 DEMO 13 -- CALL POPULATELISTVIEW -- SAME METHOD TO POPULATE
+    //CALL POPULATELISTVIEW -- SAME METHOD TO POPULATE
 	that.populateListview(records);    
 }
