@@ -13,7 +13,7 @@ function OfflineQueue() {
  * Queue for later upload
  **/
 OfflineQueue.QueueRecords = function(records,error){
-    //SFDEMO 12 -- REGISTER QUEUE SOUP AND STORE QUEUE RECORDS
+    //SFDEMO 5 -- QUEUE THE RECORDS
 	console.log('OfflineQueue.QueueRecords');	
 	OfflineQueue.RegisterQueueSoup(function(){
 		navigator.smartstore.upsertSoupEntriesWithExternalId('Queue',records, 'Id', function(){
@@ -29,7 +29,7 @@ OfflineQueue.UploadQueue = function(callback,error) {
 	console.log("OfflineQueue.UploadQueue");
 	if(Util.checkConnection()) {
       	console.log("OfflineQueue.UploadQueue -- app is online");
-        //SFDEMO 15 -- UPLOAD QUEUE TO SFDC
+        //SFDEMO 6 -- UPLOAD QUEUE TO SFDC (EMPTY IT)
 		navigator.smartstore.soupExists('Queue',function(param){
 			if(param)
 			{
@@ -44,7 +44,7 @@ OfflineQueue.UploadQueue = function(callback,error) {
 						for(i in records){
 							forcetkClient.update('Password__c',records[i].Id,{"Username__c":records[i].Username__c,"Password__c":records[i].Password__c,"Name":records[i].Name,"URL__c":records[i].URL__c},function(){
 								console.log('QUEUED SFDC Update Success!');
-                                //SFDEMO 16 -- ON SUCCESS, REMOVE RECORD FROM QUEUE
+                                //SFDEMO 4 -- ON SUCCESS, REMOVE RECORD FROM QUEUE
 								navigator.smartstore.removeFromSoup('Queue',[records[i]._soupEntryId],function(){
 									console.log('Removed from Soup');
 									if(i == records.length-1) {
@@ -65,7 +65,7 @@ OfflineQueue.UploadQueue = function(callback,error) {
 
 	}
 	else {
-		console.log("We're offline, can't upload queue... how'd we even get here?")
+		console.log("We're offline, can't upload queue... ")
 		callback();
 	}
 
@@ -98,11 +98,15 @@ OfflineQueue.StoreRecords = function(records,error){
 		console.log("Soup Upsert Success");        
 	}, error);
 
-    //SFDEMO 11 -- QUEUE THE RECORDS IF WE'RE OFFLINE
-	//if we're not connected, queue the records
-	if(!Util.checkConnection()){
-		OfflineQueue.QueueRecords(records,error);
-	}
+    //Queue the records
+	OfflineQueue.QueueRecords(records,error);
+	
+    //Try to empty the queue (UploadQueue will worry about connectivity)
+    OfflineQueue.UploadQueue(function(param){
+                                console.log("upload queue returned");
+                             },function(param){
+                                console.log("upload error...");
+                             });
 }
 
 /**

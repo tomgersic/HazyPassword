@@ -19,7 +19,7 @@ function Password () {
 Password.prototype.loadRecords = function(error) {
 	console.log("Password.prototype.loadRecords");
 	var that = this;
-    //SFDEMO X -- DECIDE WHETHER TO QUERY SFDC OR SMARTSTORE
+    //DECIDE WHETHER TO QUERY SFDC OR SMARTSTORE
 	//check if we have local records -- if we do, just load those
 	navigator.smartstore.soupExists('Password__c',function(param){
 		if(param){
@@ -41,10 +41,10 @@ Password.prototype.loadRecordsFromSalesforce = function(soupExists,error) {
 	if(Util.checkConnection()){
 		console.log('We are online...');
 		console.log('Upload any queued records from offline first');
-        //SFDEMO 14 -- PUSH QUEUE TO SFDC
+        //PUSH QUEUE TO SFDC
 		OfflineQueue.UploadQueue(function(){
 			console.log('We are online... querying SFDC');
-            //SFDEMO 4 -- QUERY FROM SALESFORCE USING FORCETK
+            //SFDEMO 7 -- QUERY FROM SALESFORCE USING FORCETK
 			forcetkClient.query("SELECT Id, Name, Username__c, Password__c, URL__c FROM Password__c", function(response){
                 that.registerPasswordSoup(function(){
 					OfflineQueue.StoreRecords(response.records,error);
@@ -70,7 +70,7 @@ Password.prototype.loadRecordsFromSalesforce = function(soupExists,error) {
 Password.prototype.loadRecordsFromSmartstore = function(error){
 	console.log("Password.prototype.loadRecordsFromSmartstore");
 	var that=this;
-    //SFDEMO 2 QUERY SMARTSTORE
+    //SFDEMO 2 -- QUERY SMARTSTORE
     var querySpec = navigator.smartstore.buildAllQuerySpec("Id", null, 2000);
         
     navigator.smartstore.querySoup('Password__c',querySpec,
@@ -100,7 +100,7 @@ Password.prototype.loadRecordWithIdFromSmartstore = function(Id,callback,error){
 Password.prototype.updateRecord = function(fieldData,error) {
 	console.log('Password.prototype.updateRecord');
 	var that=this;
-    //SFDEMO 10 -- UPDATE SMARTSTORE RECORD
+    //UPDATE SMARTSTORE RECORD
 	that.loadRecordWithIdFromSmartstore(fieldData.id,function(records){
 		console.log('Smartstore record loaded');
 		//upate username/password
@@ -108,17 +108,11 @@ Password.prototype.updateRecord = function(fieldData,error) {
 		records[0].Password__c = fieldData.password;
 		records[0].URL__c = fieldData.url;
 		records[0].Name = fieldData.name;
-        //GOTO DEMO 18
+
 		OfflineQueue.StoreRecords(records,error);
 		that.loadRecords(error);
 	},error);
 
-    //SFDEMO 13 -- SAVE TO SALESFORCE IF ONLINE
-	if(Util.checkConnection()) {
-		forcetkClient.update('Password__c',fieldData.id,{"Username__c":fieldData.username,"Password__c":fieldData.password,"URL__c":fieldData.url,"Name":fieldData.name},function(){
-			console.log('SFDC Update Success!');
-		},error);
-	}
 }
 
 /**
@@ -151,7 +145,7 @@ Password.prototype.registerPasswordSoup = function(callback,error){
 Password.prototype.populateListview = function(records){
 	console.log('Password.prototype.populateListview');
 	
-    //SFDEMO 7 -- POPULATE THE LIST VIEW WITH PASSWORD RECORDS
+    //SFDEMO 8 -- POPULATE THE LIST VIEW WITH PASSWORD RECORDS
     var passwordList = $( "#home" ).find( ".passwordList" );
 	passwordList.empty();
 	$( "#passwordItem" ).tmpl( records ).appendTo( passwordList );

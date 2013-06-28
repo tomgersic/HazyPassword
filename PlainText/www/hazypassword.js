@@ -15,7 +15,7 @@ var passwordManager;
 
 function init() {
   console.log('APPLICATION INIT');
-  //SFDEMO X -- INSTANTIATE AND LOAD RECORDS
+  //INSTANTIATE AND LOAD RECORDS
   passwordManager = new Password();
   passwordManager.loadRecords(onError);
   
@@ -39,7 +39,7 @@ function init() {
           var passwordField = page.find('#password');
           var nameField = page.find('#name');
           var urlField = page.find('#url');
-          //SFDEMO 9 -- SAVE RECORDS ON BACK FROM EDIT
+          //SAVE RECORDS ON BACK FROM EDIT
           var fieldData = {'id':idField.val(),
                            'username':usernameField.val(),
                            'password':passwordField.val(),
@@ -132,5 +132,6 @@ function changeToEditPage(url,event) {
  **/
 function onError(error) {
     console.log("onErrorSfdc: " + JSON.stringify(error));
-    alert('Application Error');
+    console.log(error);
+    alert('Hazy Password Application Error');
 }
